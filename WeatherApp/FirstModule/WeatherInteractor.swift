@@ -13,10 +13,10 @@ protocol WeatherInteractorInputProtocol {
 }
 
 protocol WeatherInteractorOutputProtocol: AnyObject {
-    func receiveWeatherData(weatherData: WeatherData)
+    func receiveWeatherData(weatherInfo: WeatherInfo)
 }
 
-class WeatherInteractor: WeatherInteractorInputProtocol {
+final class WeatherInteractor: WeatherInteractorInputProtocol {
     unowned private let presenter: WeatherInteractorOutputProtocol!
     
     required init(presenter: WeatherInteractorOutputProtocol) {
@@ -24,8 +24,8 @@ class WeatherInteractor: WeatherInteractorInputProtocol {
     }
     
     func provideWeatherData() {
-        let weather = Weather(temperature: 24, city: "Москва")
-        let weatherData = WeatherData(temperature: weather.temperature, city: weather.city)
-        presenter.receiveWeatherData(weatherData: weatherData)
+//        let weather = Info(temperature: 24, city: "Москва")
+//        let weatherData = WeatherData(temperature: weather.temperature, city: weather.city)
+//        presenter.receiveWeatherData(weatherData: weatherData)
     }
 }

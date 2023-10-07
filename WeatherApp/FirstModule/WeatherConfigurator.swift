@@ -11,7 +11,7 @@ protocol WeatherConfiguratorInputProtocol {
     func configure(withView view: WeatherViewController)
 }
 
-class WeatherConfigurator: WeatherConfiguratorInputProtocol {
+final class WeatherConfigurator: WeatherConfiguratorInputProtocol {
     func configure(withView view: WeatherViewController) {
         let presenter = WeatherPresenter(view: view)
         let interactor = WeatherInteractor(presenter: presenter)

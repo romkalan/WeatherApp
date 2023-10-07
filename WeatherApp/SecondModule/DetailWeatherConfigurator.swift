@@ -6,3 +6,16 @@
 //
 
 import Foundation
+
+protocol DetailWeatherConfiguratorInputProtocol {
+    func configure(withView view: DetailWeatherViewController, and weather: Weather)
+}
+
+class DetailWeatherConfigurator: DetailWeatherConfiguratorInputProtocol {
+    func configure(withView view: DetailWeatherViewController, and weather: Weather) {
+        let presenter = DetailWeatherPresenter(view: view)
+        let interactor = DetailWeatherInteractor(presenter: presenter, weather: weather)
+        view.presenter = presenter
+        presenter.interactor = interactor
+    }
+}

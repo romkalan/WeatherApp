@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct WeatherData {
+struct WeatherInfo {
     let temperature: Int
     let city: String
 }
 
-class WeatherPresenter: WeatherViewOutputProtocol {
+final class WeatherPresenter: WeatherViewOutputProtocol {
     unowned private let view: WeatherViewInputProtocol
-    var interactor: MainInteractorInputProtocol!
+    var interactor: WeatherInteractorInputProtocol!
     
     required init(view: WeatherViewInputProtocol) {
         self.view = view
@@ -25,9 +25,9 @@ class WeatherPresenter: WeatherViewOutputProtocol {
     }
 }
 
-extension WeatherPresenter: MainInteractorOutputProtocol {
-    func receiveWeatherData(weatherData: WeatherData) {
-        let tempInfo = "Температура в г. \(weatherData.city) - \(String(weatherData.temperature))"
+extension WeatherPresenter: WeatherInteractorOutputProtocol {
+    func receiveWeatherData(weatherInfo: WeatherInfo) {
+        let tempInfo = "Температура в г. \(weatherInfo.city) - \(String(weatherInfo.temperature))"
         view.setInfo(tempInfo)
     }
 }
