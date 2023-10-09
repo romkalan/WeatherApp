@@ -65,8 +65,10 @@ private extension WeatherCityCell {
     func setConstraints() {        
         NSLayoutConstraint.activate([
             weatherImageView.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
-            weatherImageView.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
+//            weatherImageView.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
             weatherImageView.leftAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leftAnchor),
+            weatherImageView.widthAnchor.constraint(equalToConstant: 100),
+            weatherImageView.heightAnchor.constraint(equalToConstant: 100),
             
             cityName.centerYAnchor.constraint(equalTo: weatherImageView.centerYAnchor),
             cityName.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 150),

@@ -144,6 +144,11 @@ extension WeatherViewController: UITableViewDataSource {
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let cellViewModel = sectionViewModel.rows[indexPath.row]
+        return cellViewModel.cellHeight
+    }
 }
 
 //MARK: - UITableViewDelegate

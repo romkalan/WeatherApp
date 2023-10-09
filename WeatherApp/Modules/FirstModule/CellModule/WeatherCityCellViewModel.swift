@@ -23,8 +23,6 @@ protocol WeatherCitySectionViewModelProtocol {
 }
 
 final class WeatherCityCellViewModel: WeatherCityCellViewModelProtocol {
-    private let weatherIcons = ["SunCloudMidRain", "SunCloudMidRain2", "SunCloudMidRain3", "SunCloudMidRain4"]
-    
     var cityTemp: String {
         celsiusConvert(from: weather.main.temp) + " °C"
     }
@@ -34,7 +32,7 @@ final class WeatherCityCellViewModel: WeatherCityCellViewModelProtocol {
     }
     
     var cellHeight: Double {
-        80
+        120
     }
     
     var cityName: String {
@@ -42,9 +40,7 @@ final class WeatherCityCellViewModel: WeatherCityCellViewModelProtocol {
     }
     
     var imageName: String? {
-        let randomNumber = Int.random(in: 0...3)
-        let imageName = weatherIcons[randomNumber]
-        return imageName
+        weather.weather[0].icon
     }
     
     private let weather: WeatherData

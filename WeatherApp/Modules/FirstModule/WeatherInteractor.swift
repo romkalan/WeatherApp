@@ -24,7 +24,7 @@ final class WeatherInteractor: WeatherInteractorInputProtocol {
     private let emptyCity = WeatherData()
     private var citiesWeather: [WeatherData] = []
     private var array: [WeatherData] = []
-    private var cities = ["New York", "Moscow", "Paris", "Berlin"]
+    private var cities = ["New York", "Moscow", "Paris", "Berlin", "London"]
     
     private unowned let presenter: WeatherInteractorOutputProtocol
     

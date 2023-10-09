@@ -161,7 +161,9 @@ private extension DetailWeatherViewController {
             displayInfoView.rightAnchor.constraint(equalTo: view.layoutMarginsGuide.rightAnchor),
             
             weatherImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            weatherImage.bottomAnchor.constraint(equalTo: displayInfoView.topAnchor, constant: 210),
+            weatherImage.bottomAnchor.constraint(equalTo: displayInfoView.topAnchor, constant: 190),
+            weatherImage.heightAnchor.constraint(equalToConstant: 140),
+            weatherImage.widthAnchor.constraint(equalToConstant: 140),
             
             cityName.centerXAnchor.constraint(equalTo: displayInfoView.centerXAnchor),
             cityName.centerYAnchor.constraint(equalTo: displayInfoView.centerYAnchor, constant: -30),
@@ -175,13 +177,13 @@ private extension DetailWeatherViewController {
             tempMaxLabel.centerYAnchor.constraint(equalTo: tempLabel.centerYAnchor),
             tempMaxLabel.leftAnchor.constraint(equalTo: tempLabel.layoutMarginsGuide.rightAnchor, constant: 30),
             
-            humidityIcon.centerYAnchor.constraint(equalTo: weatherImage.centerYAnchor, constant: 30),
+            humidityIcon.centerYAnchor.constraint(equalTo: weatherImage.centerYAnchor, constant: 50),
             humidityIcon.leftAnchor.constraint(equalTo: displayInfoView.layoutMarginsGuide.leftAnchor, constant: 25),
             
             humidityLabel.centerYAnchor.constraint(equalTo: humidityIcon.centerYAnchor),
             humidityLabel.leftAnchor.constraint(equalTo: humidityIcon.layoutMarginsGuide.rightAnchor, constant: 16),
             
-            windIcon.centerYAnchor.constraint(equalTo: weatherImage.centerYAnchor, constant: 30),
+            windIcon.centerYAnchor.constraint(equalTo: weatherImage.centerYAnchor, constant: 50),
             windIcon.rightAnchor.constraint(equalTo: windLabel.layoutMarginsGuide.leftAnchor, constant: -16),
             
             windLabel.centerYAnchor.constraint(equalTo: windIcon.centerYAnchor),

@@ -29,7 +29,7 @@ final class DetailWeatherInteractor: DetailWeatherInteractorInputProtocol {
         let dataStore = DetailWeatherDataStore(
             backgroundImage: "background",
             displayInfoImage: "displayWeather",
-            weatherImage: "SunCloudMidRain",
+            weatherImage: weather.weather[0].icon,
             humidityIcon: "raindDropIcon",
             windIcon: "windVectorIcon",
             cityName: weather.name,
