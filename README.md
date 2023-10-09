@@ -8,5 +8,6 @@ API: https://openweathermap.org
 For check app you must use your own API Key on https://openweathermap.org
 
 ## Records
-https://github.com/romkalan/WeatherApp/assets/116355331/463c6278-474c-495f-a79e-0ec3c943282e
+
+https://github.com/romkalan/WeatherApp/assets/116355331/277d6914-825e-4a60-83d0-dd9873e656ea
 
