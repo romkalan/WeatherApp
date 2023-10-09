@@ -17,7 +17,7 @@ enum NetworkError: Error {
 final class NetworkManager {
     static let shared = NetworkManager()
     // This is place for your APIKey from https://api.openweathermap.org
-    let APIKey = "Your API Key"
+    let APIKey = "Enter your API Key"
     
     private init() {}
     

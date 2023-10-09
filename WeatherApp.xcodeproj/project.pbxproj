@@ -87,6 +87,15 @@
 			path = CellModule;
 			sourceTree = "<group>";
 		};
+		ADD9F1942AD47338000AB0D8 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				ADF264D22ACF01A8003B50F6 /* FirstModule */,
+				ADD9F1832AD08454000AB0D8 /* SecondModule */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
 		ADF264B02ACF0168003B50F6 = {
 			isa = PBXGroup;
 			children = (
@@ -107,8 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				ADF264D02ACF018A003B50F6 /* App */,
-				ADF264D22ACF01A8003B50F6 /* FirstModule */,
-				ADD9F1832AD08454000AB0D8 /* SecondModule */,
+				ADD9F1942AD47338000AB0D8 /* Modules */,
 				ADD9F17C2ACFE957000AB0D8 /* NetworkManager */,
 				ADF264DB2ACF1271003B50F6 /* Model */,
 				ADF264D12ACF0196003B50F6 /* Resources */,
