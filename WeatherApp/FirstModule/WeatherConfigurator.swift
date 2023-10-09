@@ -15,8 +15,10 @@ final class WeatherConfigurator: WeatherConfiguratorInputProtocol {
     func configure(withView view: WeatherViewController) {
         let presenter = WeatherPresenter(view: view)
         let interactor = WeatherInteractor(presenter: presenter)
+        let router = WeatherRouter(view: view)
         
         view.presenter = presenter
         presenter.interactor = interactor
+        presenter.router = router
     }
 }

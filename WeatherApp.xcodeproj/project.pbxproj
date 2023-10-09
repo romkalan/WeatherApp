@@ -14,6 +14,7 @@
 		ADD9F1872AD0848E000AB0D8 /* WeatherRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD9F1862AD0848E000AB0D8 /* WeatherRouter.swift */; };
 		ADD9F1892AD0849C000AB0D8 /* DetailWeatherInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD9F1882AD0849C000AB0D8 /* DetailWeatherInteractor.swift */; };
 		ADD9F18B2AD084AB000AB0D8 /* DetailWeatherConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD9F18A2AD084AB000AB0D8 /* DetailWeatherConfigurator.swift */; };
+		ADD9F18E2AD2C991000AB0D8 /* WeatherCityCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD9F18D2AD2C991000AB0D8 /* WeatherCityCellViewModel.swift */; };
 		ADF264BD2ACF0168003B50F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF264BC2ACF0168003B50F6 /* AppDelegate.swift */; };
 		ADF264BF2ACF0168003B50F6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF264BE2ACF0168003B50F6 /* SceneDelegate.swift */; };
 		ADF264C12ACF0168003B50F6 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF264C02ACF0168003B50F6 /* WeatherViewController.swift */; };
@@ -33,6 +34,7 @@
 		ADD9F1862AD0848E000AB0D8 /* WeatherRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRouter.swift; sourceTree = "<group>"; };
 		ADD9F1882AD0849C000AB0D8 /* DetailWeatherInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailWeatherInteractor.swift; sourceTree = "<group>"; };
 		ADD9F18A2AD084AB000AB0D8 /* DetailWeatherConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailWeatherConfigurator.swift; sourceTree = "<group>"; };
+		ADD9F18D2AD2C991000AB0D8 /* WeatherCityCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherCityCellViewModel.swift; sourceTree = "<group>"; };
 		ADF264B92ACF0168003B50F6 /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADF264BC2ACF0168003B50F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ADF264BE2ACF0168003B50F6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				ADD9F17F2AD068EA000AB0D8 /* WeatherCityCell.swift */,
+				ADD9F18D2AD2C991000AB0D8 /* WeatherCityCellViewModel.swift */,
 			);
 			path = CellModule;
 			sourceTree = "<group>";
@@ -103,13 +106,12 @@
 		ADF264BB2ACF0168003B50F6 /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
-				ADD9F17C2ACFE957000AB0D8 /* NetworkManager */,
 				ADF264D02ACF018A003B50F6 /* App */,
 				ADF264D22ACF01A8003B50F6 /* FirstModule */,
 				ADD9F1832AD08454000AB0D8 /* SecondModule */,
+				ADD9F17C2ACFE957000AB0D8 /* NetworkManager */,
 				ADF264DB2ACF1271003B50F6 /* Model */,
 				ADF264D12ACF0196003B50F6 /* Resources */,
-				ADF264C72ACF0169003B50F6 /* LaunchScreen.storyboard */,
 			);
 			path = WeatherApp;
 			sourceTree = "<group>";
@@ -119,6 +121,7 @@
 			children = (
 				ADF264BC2ACF0168003B50F6 /* AppDelegate.swift */,
 				ADF264BE2ACF0168003B50F6 /* SceneDelegate.swift */,
+				ADF264C72ACF0169003B50F6 /* LaunchScreen.storyboard */,
 				ADF264CA2ACF0169003B50F6 /* Info.plist */,
 			);
 			path = App;
@@ -234,6 +237,7 @@
 				ADD9F1822AD0844E000AB0D8 /* DetailWeatherViewController.swift in Sources */,
 				ADD9F17B2ACFE94A000AB0D8 /* NetworkManager.swift in Sources */,
 				ADF264D42ACF072A003B50F6 /* WeatherPresenter.swift in Sources */,
+				ADD9F18E2AD2C991000AB0D8 /* WeatherCityCellViewModel.swift in Sources */,
 				ADF264D82ACF0741003B50F6 /* WeatherConfigurator.swift in Sources */,
 				ADD9F1872AD0848E000AB0D8 /* WeatherRouter.swift in Sources */,
 				ADF264DA2ACF10F5003B50F6 /* Weather.swift in Sources */,

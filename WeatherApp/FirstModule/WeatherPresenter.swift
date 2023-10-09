@@ -7,27 +7,48 @@
 
 import Foundation
 
-struct WeatherInfo {
-    let temperature: Int
-    let city: String
+struct WeatherInfoDataStore {
+    let weather: [WeatherData]
 }
 
 final class WeatherPresenter: WeatherViewOutputProtocol {
-    unowned private let view: WeatherViewInputProtocol
     var interactor: WeatherInteractorInputProtocol!
+    var router: WeatherRouterInputProtocol!
     
+    unowned private let view: WeatherViewInputProtocol
+    private var dataStore: WeatherInfoDataStore?
+        
     required init(view: WeatherViewInputProtocol) {
         self.view = view
     }
     
-    func didTapShowWeather() {
-        interactor.provideWeatherData()
+    func viewDidLoad() {
+        interactor.fetchWeather()
+    }
+    
+    func didTapCell(at indexPath: IndexPath) {
+        guard let weather = dataStore?.weather[indexPath.row] else { return }
+        router.openDetailWeatherViewController(with: weather, for: view)
+    }
+    
+    func didSwipeCell(at indexPath: IndexPath) {
+        interactor.deleteRow(at: indexPath)
+    }
+    
+    func didTapAddNewCity(with name: String) {
+        interactor.addNewCity(with: name)
     }
 }
 
 extension WeatherPresenter: WeatherInteractorOutputProtocol {
-    func receiveWeatherData(weatherInfo: WeatherInfo) {
-        let tempInfo = "Температура в г. \(weatherInfo.city) - \(String(weatherInfo.temperature))"
-        view.setInfo(tempInfo)
+    func weatherDidReceive(with dataStore: WeatherInfoDataStore) {
+        self.dataStore = dataStore
+        let section = WeatherCitySectionViewModel()
+//        dataStore.weather.forEach { section.rows.append(WeatherCityCellViewModel(weather: $0)) }
+        for weather in dataStore.weather {
+            let weatherCityCellViewModel = WeatherCityCellViewModel(weather: weather)
+            section.rows.append(weatherCityCellViewModel)
+        }
+        view.reloadData(for: section)
     }
 }

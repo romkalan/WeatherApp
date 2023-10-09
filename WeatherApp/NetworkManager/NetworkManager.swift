@@ -16,7 +16,8 @@ enum NetworkError: Error {
 
 final class NetworkManager {
     static let shared = NetworkManager()
-    let APIKey = "Enter you APIKey"
+    // This is place for your APIKey from https://api.openweathermap.org
+    let APIKey = "Your API Key"
     
     private init() {}
     
@@ -33,6 +34,20 @@ final class NetworkManager {
                     case .failure(let error):
                         print(error)
                     }
+                }
+            }
+        }
+    }
+    
+    func addNewCityWeather(with name: String, completion: @escaping(WeatherData) -> Void) {
+        getCoordinateFrom(city: name) { coordinate, error in
+            guard let coordinate = coordinate, error == nil else { return }
+            self.fetchData(WeatherData.self, latitude: coordinate.latitude, longitude: coordinate.longitude) { result in
+                switch result {
+                case .success(let weather):
+                    completion(weather)
+                case .failure(let error):
+                    print(error)
                 }
             }
         }
@@ -59,7 +74,9 @@ final class NetworkManager {
             
             do {
                 let dataModel = try JSONDecoder().decode(T.self, from: data)
-                completion(.success(dataModel))
+                DispatchQueue.main.async {
+                    completion(.success(dataModel))
+                }
             } catch {
                 completion(.failure(.decodingError))
             }

@@ -8,29 +8,35 @@
 import UIKit
 
 protocol WeatherViewInputProtocol: AnyObject {
-    func setInfo(_ info: String)
+    func reloadData(for section: WeatherCitySectionViewModel)
+    func deleteRow(at indexPath: IndexPath, for section: WeatherCitySectionViewModelProtocol)
 }
 
 protocol WeatherViewOutputProtocol {
     init(view: WeatherViewInputProtocol)
-    func didTapShowWeather()
+    func viewDidLoad()
+    func didTapCell(at indexPath: IndexPath)
+    func didSwipeCell(at indexPath: IndexPath)
+    func didTapAddNewCity(with name: String)
 }
 
 final class WeatherViewController: UIViewController {
     var presenter: WeatherViewOutputProtocol!
-    
-    private let networkManager = NetworkManager.shared
     private let configurator: WeatherConfiguratorInputProtocol = WeatherConfigurator()
+    private var sectionViewModel: WeatherCitySectionViewModelProtocol = WeatherCitySectionViewModel()
     
-    let emptyCity = WeatherData()
-    private var citiesWeather: [WeatherData] = []
-    private var cities = ["New York", "Moscow", "Paris", "Berlin", "Madrid"]
+    private let activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.color = .black
+        activityIndicator.startAnimating()
+        activityIndicator.hidesWhenStopped = true
+        return activityIndicator
+    }()
     
-    private lazy var tableView: UITableView = {
+    private let tableView: UITableView = {
         let table = UITableView()
-        table.register(WeatherCityCell.self, forCellReuseIdentifier: WeatherCityCell.cellID)
+        table.register(WeatherCityCell.self, forCellReuseIdentifier: "weatherCell")
         table.separatorColor = .gray
-        let backgroundImage = UIImage(named: "background")
         table.backgroundColor = .clear
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
@@ -46,32 +52,11 @@ final class WeatherViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configurator.configure(withView: self)
-        tableView.dataSource = self
         tableView.delegate = self
-                
+        tableView.dataSource = self
+        configurator.configure(withView: self)
         setupUI()
-        addCities()
-    }
-    
-    func addCities() {
-        if citiesWeather.isEmpty {
-            citiesWeather = Array(repeating: emptyCity, count: cities.count)
-        }
-        
-        networkManager.getCityWeather(citiesArray: cities) { [unowned self] index, weather in
-            citiesWeather[index] = weather
-            citiesWeather[index].name = cities[index]
-            
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        presenter.didTapShowWeather()
+        presenter.viewDidLoad()
     }
 }
 
@@ -80,16 +65,28 @@ private extension WeatherViewController {
     func setupUI() {
         addViews()
         setupNavBar()
+        setupActivityIndicator()
         setConstraints()
     }
     
     func setupNavBar() {
         navigationItem.title = "Weather"
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            systemItem: .add,
+            primaryAction: UIAction { [unowned self] _ in
+                showAlert()
+            }
+        )
+    }
+    
+    func setupActivityIndicator() {
+        activityIndicator.center = view.center
     }
     
     func addViews() {
         view.addSubview(backgroundImageView)
+        view.addSubview(activityIndicator)
         view.addSubview(tableView)
     }
     
@@ -108,46 +105,74 @@ private extension WeatherViewController {
     }
 }
 
+// MARK: - Alert Controller
+extension WeatherViewController {
+    func showAlert() {
+        let alert = UIAlertController(
+            title: "Add City",
+            message: "Add new City in your List of Weather",
+            preferredStyle: .alert
+        )
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+            guard let text = alert.textFields?.first?.text else { return }
+            self.presenter.didTapAddNewCity(with: text)
+        }
+        alert.addAction(okAction)
+        alert.addTextField { textField in
+            textField.placeholder = "New City"
+        }
+        present(alert, animated: true)
+    }
+}
+
 //MARK: - UITableViewDataSource
 extension WeatherViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        citiesWeather.count
+        sectionViewModel.numberOfRows
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cellViewModel = sectionViewModel.rows[indexPath.row]
+        
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: WeatherCityCell.cellID,
+            withIdentifier: cellViewModel.cellID,
             for: indexPath
         ) as? WeatherCityCell else { return UITableViewCell() }
         
-        let weather = citiesWeather[indexPath.row]
+        cell.viewModel = cellViewModel
         cell.backgroundColor = .clear
-        cell.configure(weather: weather)
         
-        cell.selectionStyle = .none
         return cell
     }
 }
 
 //MARK: - UITableViewDelegate
 extension WeatherViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = DetailWeatherViewController()
-        
-        let weather = citiesWeather[indexPath.row]
-        vc.configure(weather: weather)
-        
-        if !(self.navigationController!.topViewController! is DetailWeatherViewController) {
-           self.navigationController?.pushViewController(vc, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
+        presenter.didTapCell(at: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let action = UIContextualAction(style: .destructive, title: "Delete") { [unowned self] (_, _, completion) in
+            self.presenter.didSwipeCell(at: indexPath)
         }
+        return UISwipeActionsConfiguration(actions: [action])
     }
 }
 
 //MARK: - MainViewInputProtocol
 extension WeatherViewController: WeatherViewInputProtocol {
-    func setInfo(_ info: String) {
-        
+    func reloadData(for section: WeatherCitySectionViewModel) {
+        sectionViewModel = section
+        tableView.reloadData()
+        activityIndicator.stopAnimating()
+    }
+    
+    func deleteRow(at indexPath: IndexPath, for section: WeatherCitySectionViewModelProtocol) {
+        sectionViewModel = section
+        tableView.deleteRows(at: [indexPath], with: .fade)
+        tableView.reloadData()
     }
 }
 

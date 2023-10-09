@@ -8,23 +8,28 @@
 import UIKit
 
 protocol DetailWeatherViewInputProtocol: AnyObject {
-    
+    func displayImageForBackground(with imageName: String)
+    func displayImageForDisplayInfoView(with imageName: String)
+    func displayImageForWeatherImage(with imageName: String)
+    func displayIconForHumidity(with imageName: String)
+    func displayIconForWind(with imageName: String)
+    func displayCityName(with title: String)
+    func displayTemp(with temp: String, minTemp: String, maxTemp: String)
+    func displayHumidity(with humidity: String)
+    func displayWind(with windSpeed: String)
 }
 
 protocol DetailWeatherViewOutputProtocol {
     init(view: DetailWeatherViewInputProtocol)
-    func showDetail()
+    func showDetails()
 }
 
 final class DetailWeatherViewController: UIViewController {
-    
     var weather: WeatherData!
     var presenter: DetailWeatherViewOutputProtocol!
-    var configurator: DetailWeatherConfiguratorInputProtocol = DetailWeatherConfigurator()
     
     private let backgroundImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "background")
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -32,7 +37,6 @@ final class DetailWeatherViewController: UIViewController {
     
     private let displayInfoView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "displayWeather")
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -40,7 +44,6 @@ final class DetailWeatherViewController: UIViewController {
     
     private let weatherImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "SunCloudMidRain")
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -48,7 +51,7 @@ final class DetailWeatherViewController: UIViewController {
     
     private let cityName: UILabel = {
         let label = UILabel()
-        label.text = "Наименование"
+        label.text = "City"
         label.textAlignment = .left
         label.textColor = .black
         label.font = label.font.withSize(40)
@@ -59,7 +62,6 @@ final class DetailWeatherViewController: UIViewController {
     
     private let tempLabel: UILabel = {
         let label = UILabel()
-        label.text = "Температура"
         label.textAlignment = .right
         label.textColor = .black
         label.font = label.font.withSize(30)
@@ -70,7 +72,6 @@ final class DetailWeatherViewController: UIViewController {
     
     private let tempMinLabel: UILabel = {
         let label = UILabel()
-        label.text = "Температура"
         label.textAlignment = .right
         label.textColor = .black
         label.numberOfLines = 0
@@ -80,7 +81,6 @@ final class DetailWeatherViewController: UIViewController {
     
     private let tempMaxLabel: UILabel = {
         let label = UILabel()
-        label.text = "Температура"
         label.textAlignment = .right
         label.textColor = .black
         label.numberOfLines = 0
@@ -90,7 +90,6 @@ final class DetailWeatherViewController: UIViewController {
     
     private let humidityIcon: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "raindDropIcon")
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -98,7 +97,6 @@ final class DetailWeatherViewController: UIViewController {
     
     private let humidityLabel: UILabel = {
         let label = UILabel()
-        label.text = "Влажность"
         label.textAlignment = .right
         label.textColor = .black
         label.numberOfLines = 0
@@ -108,7 +106,6 @@ final class DetailWeatherViewController: UIViewController {
     
     private let windIcon: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "windVectorIcon")
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -116,7 +113,6 @@ final class DetailWeatherViewController: UIViewController {
     
     private let windLabel: UILabel = {
         let label = UILabel()
-        label.text = "Скорость"
         label.textAlignment = .right
         label.textColor = .black
         label.numberOfLines = 0
@@ -127,20 +123,7 @@ final class DetailWeatherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        presenter.showDetail()
-    }
-    
-    func configure(weather: WeatherData) {
-        cityName.text = weather.name
-        tempLabel.text = celsiusConvert(from: weather.main.temp) + " °C"
-        tempMaxLabel.text = celsiusConvert(from: weather.main.tempMax) + " °C"
-        tempMinLabel.text = celsiusConvert(from: weather.main.tempMin) + " °C"
-        humidityLabel.text = String(weather.main.humidity) + " %"
-        windLabel.text = String(weather.wind.speed) + " m/s"
-    }
-    
-    private func celsiusConvert(from kelvin: Double) -> String {
-        String(format: "%.1f", kelvin - 273.15)
+        presenter.showDetails()
     }
 }
 
@@ -150,7 +133,7 @@ private extension DetailWeatherViewController {
         addViews()
         setConstraints()
     }
-    
+
     func addViews() {
         view.addSubview(backgroundImageView)
         view.addSubview(displayInfoView)
@@ -209,5 +192,41 @@ private extension DetailWeatherViewController {
 
 //MARK: - DetailWeatherViewInputProtocol
 extension DetailWeatherViewController: DetailWeatherViewInputProtocol {
+    func displayImageForDisplayInfoView(with imageName: String) {
+        displayInfoView.image = UIImage(named: imageName)
+    }
     
+    func displayImageForWeatherImage(with imageName: String) {
+        weatherImage.image = UIImage(named: imageName)
+    }
+    
+    func displayIconForHumidity(with imageName: String) {
+        humidityIcon.image = UIImage(named: imageName)
+    }
+    
+    func displayIconForWind(with imageName: String) {
+        windIcon.image = UIImage(named: imageName)
+    }
+    
+    func displayImageForBackground(with imageName: String) {
+        backgroundImageView.image = UIImage(named: imageName)
+    }
+    
+    func displayHumidity(with humidity: String) {
+        humidityLabel.text = humidity
+    }
+    
+    func displayWind(with windSpeed: String) {
+        windLabel.text = windSpeed
+    }
+    
+    func displayTemp(with temp: String, minTemp: String, maxTemp: String) {
+        tempLabel.text = temp
+        tempMinLabel.text = minTemp
+        tempMaxLabel.text = maxTemp
+    }
+    
+    func displayCityName(with title: String) {
+        cityName.text = title
+    }
 }
